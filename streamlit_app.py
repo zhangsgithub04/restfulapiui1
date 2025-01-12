@@ -56,4 +56,12 @@ elif nav == "Read Users":
 
 elif nav == "Update User":
     user_id = st.number_input("Enter user ID", min_value=1)
-    name = st.text_input("Enter new user name
+    name = st.text_input("Enter new user name")
+    age = st.number_input("Enter new user age", min_value=18)
+    if st.button("Update User"):
+        update_user(user_id, name, age)
+
+elif nav == "Delete User":
+    user_id = st.number_input("Enter user ID", min_value=1)
+    if st.button("Delete User"):
+        delete_user(user_id)
