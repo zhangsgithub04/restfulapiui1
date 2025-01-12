@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 
 # API endpoint URL
-api_url = "https://example.execute-api.us-east-1.amazonaws.com/prod/users"
+api_url = "https://en8mbz3dp3.execute-api.us-east-1.amazonaws.com/default/szrestful1"
 
 # Streamlit app title
 st.title("User Management App")
@@ -10,20 +10,33 @@ st.title("User Management App")
 # Create a user
 def create_user(name, age):
     payload = {"name": name, "age": age}
-    response = requests.post(api_url, json=payload)
+    response = requests.post(f"{api_url}", json=payload)
     if response.status_code == 201:
         st.success("User created successfully!")
+        st.json(response.json())
     else:
         st.error("Error creating user")
+        st.error(response.text)
 
 # Read users
 def read_users():
-    response = requests.get(api_url)
+    response = requests.get(f"{api_url}")
     if response.status_code == 200:
         users = response.json()
         st.write(users)
     else:
         st.error("Error reading users")
+        st.error(response.text)
+
+# Read user by ID
+def read_user_by_id(user_id):
+    response = requests.get(f"{api_url}/{user_id}")
+    if response.status_code == 200:
+        user = response.json()
+        st.write(user)
+    else:
+        st.error("Error reading user")
+        st.error(response.text)
 
 # Update a user
 def update_user(user_id, name, age):
@@ -31,8 +44,10 @@ def update_user(user_id, name, age):
     response = requests.put(f"{api_url}/{user_id}", json=payload)
     if response.status_code == 200:
         st.success("User updated successfully!")
+        st.json(response.json())
     else:
         st.error("Error updating user")
+        st.error(response.text)
 
 # Delete a user
 def delete_user(user_id):
@@ -41,9 +56,10 @@ def delete_user(user_id):
         st.success("User deleted successfully!")
     else:
         st.error("Error deleting user")
+        st.error(response.text)
 
 # App navigation
-nav = st.sidebar.selectbox("Navigation", ["Create User", "Read Users", "Update User", "Delete User"])
+nav = st.sidebar.selectbox("Navigation", ["Create User", "Read Users", "Read User by ID", "Update User", "Delete User"])
 
 if nav == "Create User":
     name = st.text_input("Enter user name")
@@ -53,6 +69,11 @@ if nav == "Create User":
 
 elif nav == "Read Users":
     read_users()
+
+elif nav == "Read User by ID":
+    user_id = st.number_input("Enter user ID", min_value=1)
+    if st.button("Read User"):
+        read_user_by_id(user_id)
 
 elif nav == "Update User":
     user_id = st.number_input("Enter user ID", min_value=1)
