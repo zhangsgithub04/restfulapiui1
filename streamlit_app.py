@@ -5,7 +5,7 @@ import requests
 api_url = "https://en8mbz3dp3.execute-api.us-east-1.amazonaws.com/default/szrestful1"
 
 # Streamlit app title
-st.title("User Management App")
+st.title("Boardx User Management App 2025")
 
 # Create a user
 def create_user(name, age):
